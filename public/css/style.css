@@ -1,0 +1,55 @@
+body {
+    background-color: #CCC;
+}
+
+table.task-list {
+    width: 500px;
+}
+
+table tfoot tr {
+    height: 60px;
+    background: #AAA;
+}
+
+#add-task-input {
+    height: 38px;
+    border-radius: 5px;
+}
+
+.container-table100 {
+    margin: 0 auto;
+    width: 500px;
+    background: none;
+}
+
+.heading1 {
+    margin-bottom: 25px;
+}
+
+input[type=checkbox]
+{
+  transform: scale(2);
+  margin-right: 20px;
+}
+
+input[type=text]
+{
+  border: 1px solid black !important;
+}
+
+.small-btn {
+    width: 29px;
+    height: 29px;
+    padding: 0;
+    margin-top: -3px;
+    margin-right: 12px;
+}
+
+.center {
+    text-align: center;
+    width: 100%;
+}
+
+.column2 * {
+    display: inline-block;
+}

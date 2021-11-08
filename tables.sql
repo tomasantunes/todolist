@@ -1,0 +1,5 @@
+CREATE TABLE tasks (
+	id serial PRIMARY KEY,
+	title VARCHAR ( 999 ) NOT NULL,
+	isDone BOOLEAN NOT NULL
+);

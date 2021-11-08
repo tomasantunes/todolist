@@ -1,0 +1,114 @@
+<div id="app">
+    <div class="limiter">
+        <div class="container-table100">
+            <div class="wrap-table100">
+                <div class="table100">
+                    <h1 class="heading1">To-Do List</h1>
+                    <table>
+                        <thead>
+                            <tr class="table100-head">
+                                <th class="column1">Task</th>
+                                <th class="column2">Done</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: tasks">
+                            <tr>
+                                <td class="column1" data-bind="text: title, visible: !editMode()"></td>
+                                <td class="column1" data-bind="visible: editMode">
+                                    <input type="text" data-bind="textInput: title">
+                                </td>
+                                <td class="column2">
+                                    <input type="checkbox" data-bind="checked: isDone, click: save">
+                                    <button type="button" class="btn btn-danger small-btn" data-bind="click: deleteTask">
+                                        <i class="fa fa-times center"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-primary small-btn" data-bind="click: edit, visible: !editMode()">
+                                        <i class="fa fa-edit center"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-primary small-btn" data-bind="click: save, visible: editMode">
+                                        <i class="fa fa-save center"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="column1">
+                                    <input type="text" id="add-task-input" data-bind="textInput: newTask.title">
+                                </td>
+                                <td class="column2">
+                                    <button class="btn btn-primary" data-bind="click: addTask">Add</button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    function AppModelView() {
+        var self = this;
+        self.tasks = ko.observableArray([]);
+
+        self.newTask = {
+            "title": ko.observable(),
+            "isDone": ko.observable()
+        }
+
+        self.TaskModel = function(t) {
+            var tm = this;
+            tm.id = ko.observable(t.id);
+            tm.title = ko.observable(t.title);
+            tm.isDone = ko.observable(t.isDone);
+            tm.editMode = ko.observable(false);
+
+            tm.deleteTask = function() {
+                $.get("/tasks/delete", {"id": tm.id()});
+                self.loadTasks();
+            }
+
+            tm.edit = function() {
+                tm.editMode(true);
+            }
+
+            tm.save = function() {
+                $.get("/tasks/update", {
+                    "id": tm.id(),
+                    "title": tm.title(),
+                    "isDone": tm.isDone()
+                });
+                self.loadTasks();
+            }
+        }
+
+        self.loadTasks = function() {
+            self.tasks.removeAll();
+            $.getJSON("/tasks/list", function(data) {
+                $.each(data, function(i, val) {
+                    var task = {"id": val[0], "title": val[1], "isDone": val[2]};
+                    self.tasks.push(new self.TaskModel(task));
+                });
+                self.tasks.sort(function(l,r) { return l.id() === r.id() ? 0 : l.id() < r.id() ? -1 : 1; });
+            });
+        }
+
+        self.addTask = function() {
+            var task = {"title": self.newTask.title(), "isDone": false};
+            $.get("/tasks/add", task);
+            self.loadTasks();
+        }
+
+        
+
+        self.init = function() {
+            self.loadTasks();
+        }
+
+        self.init();
+    }
+
+    ko.applyBindings(new AppModelView(), document.getElementById('app'));
+</script>
