@@ -79,6 +79,7 @@
 
             tm.exitEditMode = function() {
                 tm.editMode(false);
+                self.loadTasks();
             }
 
             tm.save = function() {
