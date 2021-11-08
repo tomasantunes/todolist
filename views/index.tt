@@ -28,6 +28,9 @@
                                     <button type="button" class="btn btn-primary small-btn" data-bind="click: save, visible: editMode">
                                         <i class="fa fa-save center"></i>
                                     </button>
+                                    <button type="button" class="btn btn-secondary small-btn" data-bind="click: exitEditMode, visible: editMode">
+                                        <i class="fa fa-times center"></i>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -74,6 +77,10 @@
                 tm.editMode(true);
             }
 
+            tm.exitEditMode = function() {
+                tm.editMode(false);
+            }
+
             tm.save = function() {
                 $.get("/tasks/update", {
                     "id": tm.id(),
@@ -100,8 +107,6 @@
             $.get("/tasks/add", task);
             self.loadTasks();
         }
-
-        
 
         self.init = function() {
             self.loadTasks();

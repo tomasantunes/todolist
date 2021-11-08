@@ -18,7 +18,7 @@ table tfoot tr {
 
 .container-table100 {
     margin: 0 auto;
-    width: 500px;
+    width: 550px;
     background: none;
 }
 
@@ -48,6 +48,10 @@ input[type=text]
 .center {
     text-align: center;
     width: 100%;
+}
+
+.column2 {
+    width: 250px;
 }
 
 .column2 * {
